@@ -23,10 +23,18 @@ jobs:
           kubectl kustomize k8s/overlays/dev > /tmp/rendered.yaml
           echo "Kustomize render succeeded"
 
-      - name: Validate rendered Kubernetes YAML
+      - name: Validate kustomize build
         run: |
-          kubectl apply --dry-run=client --validate=false -f /tmp/rendered.yaml
-          echo "Kubernetes YAML dry-run passed"
+          kubectl kustomize k8s/overlays/dev > /tmp/rendered.yaml
+          echo "Kustomize render succeeded"
+
+      - name: Validate rendered Kubernetes YAML (kubeconform)
+        run: |
+          curl -sSL -o kubeconform.tar.gz https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz
+          tar -xzf kubeconform.tar.gz kubeconform
+          sudo mv kubeconform /usr/local/bin/kubeconform
+          kubeconform -strict -summary /tmp/rendered.yaml
+
 
       - name: Set up Python
         uses: actions/setup-python@v5
