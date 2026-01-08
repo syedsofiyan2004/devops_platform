@@ -13,6 +13,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: "v1.29.0"
+
+      - name: Validate kustomize build
+        run: |
+          kubectl kustomize k8s/overlays/dev > /tmp/rendered.yaml
+          echo "Kustomize render succeeded"
+
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
