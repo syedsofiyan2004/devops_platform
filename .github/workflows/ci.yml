@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 jobs:
@@ -23,7 +23,6 @@ jobs:
           kubectl kustomize k8s/overlays/dev > /tmp/rendered.yaml
           echo "Kustomize render succeeded"
 
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -41,7 +40,8 @@ jobs:
       - name: Docker build
         run: |
           docker build -t devops-app:ci ./app
-            - name: Trivy scan (fail on CRITICAL/HIGH)
+
+      - name: Trivy scan (fail on CRITICAL/HIGH)
         uses: aquasecurity/trivy-action@0.24.0
         with:
           image-ref: devops-app:ci
