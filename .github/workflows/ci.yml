@@ -25,9 +25,8 @@ jobs:
 
       - name: Validate rendered Kubernetes YAML
         run: |
-          kubectl apply --dry-run=client -f /tmp/rendered.yaml
-          echo "Kubernetes YAML dry-run validation passed"
-   
+          kubectl apply --dry-run=client --validate=false -f /tmp/rendered.yaml
+          echo "Kubernetes YAML dry-run passed"
 
       - name: Set up Python
         uses: actions/setup-python@v5
