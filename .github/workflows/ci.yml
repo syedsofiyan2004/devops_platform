@@ -23,6 +23,12 @@ jobs:
           kubectl kustomize k8s/overlays/dev > /tmp/rendered.yaml
           echo "Kustomize render succeeded"
 
+      - name: Validate rendered Kubernetes YAML
+        run: |
+          kubectl apply --dry-run=client -f /tmp/rendered.yaml
+          echo "Kubernetes YAML dry-run validation passed"
+   
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
